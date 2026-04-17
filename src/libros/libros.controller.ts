@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, ParseIntPipe } from '@nestjs/common';
 import { LibrosService } from './libros.service';
 import { CreateLibroDto } from './dto/create-libro.dto';
 import { UpdateLibroDto } from './dto/update-libro.dto';
@@ -19,17 +19,20 @@ export class LibrosController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.librosService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.librosService.findOne(id);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateLibroDto) {
-    return this.librosService.update(+id, dto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateLibroDto
+  ) {
+    return this.librosService.update(id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.librosService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.librosService.remove(id);
   }
 }
